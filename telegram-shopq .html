@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<title>MIR SCENTS</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Cormorant+Garamond:wght@400;600;700&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+
+<style>
+:root{
+  --bg:       #05040D;
+  --bg2:      #08071A;
+  --card:     #0C0B1E;
+  --card2:    #100F25;
+  --purple:   #6422C8;
+  --purple2:  #8040E8;
+  --purple3:  #A560FF;
+  --pglow:    rgba(100,34,200,0.5);
+  --pglow2:   rgba(100,34,200,0.18);
+  --pglow3:   rgba(100,34,200,0.08);
+  --gold:     #C9A84C;
+  --gold2:    #E8C97A;
+  --goldd:    rgba(201,168,76,0.12);
+  --silver:   #D2D0E8;
+  --silvd:    #6E6C88;
+  --silvd2:   #9A98B8;
+  --text:     #EDEBFF;
+  --border:   rgba(100,34,200,0.28);
+  --borderf:  rgba(100,34,200,0.55);
+  --borderr:  rgba(255,255,255,0.06);
+  --r:        14px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{
+  background:var(--bg); color:var(--text);
+  font-family:'Jost',sans-serif;
+  min-height:100vh; overflow-x:hidden;
+}
+
+/* ── AMBIENT GLOW ── */
+.glow-top{
+  position:fixed; top:-220px; left:50%; transform:translateX(-50%);
+  width:800px; height:700px;
+  background:radial-gradient(ellipse,rgba(100,34,200,.4) 0%,transparent 62%);
+  pointer-events:none; z-index:0;
+}
+.glow-bot{
+  position:fixed; bottom:-150px; right:-100px;
+  width:500px; height:500px;
+  background:radial-gradient(ellipse,rgba(201,168,76,.06) 0%,transparent 65%);
+  pointer-events:none; z-index:0;
+}
+
+/* ── HEADER ── */
+.hdr{
+  position:sticky; top:0; z-index:100;
+  background:rgba(5,4,13,.94);
+  backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border);
+  padding:0 16px; height:58px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.logo-wrap{ display:flex; flex-direction:column; gap:0; }
+.logo{
+  font-family:'Playfair Display',serif;
+  font-size:20px; font-weight:900; letter-spacing:4px; color:#fff;
+  text-shadow:0 0 24px rgba(165,96,255,.6);
+  line-height:1;
+}
+.logo em{ color:var(--purple3); font-style:normal; }
+.logo-sub{
+  font-family:'Jost',sans-serif; font-size:8px; font-weight:300;
+  letter-spacing:5px; text-transform:uppercase; color:var(--silvd2);
+  margin-top:1px;
+}
+.hdr-cart{
+  background:linear-gradient(135deg,var(--purple),#4A12A0);
+  border:none; border-radius:10px; padding:9px 16px;
+  font-family:'Jost',sans-serif; font-size:12px; font-weight:600;
+  letter-spacing:1.5px; text-transform:uppercase;
+  color:#fff; cursor:pointer;
+  display:flex; align-items:center; gap:8px;
+  box-shadow:0 0 20px rgba(100,34,200,.5);
+  transition:opacity .2s;
+}
+.hdr-cart:active{opacity:.82}
+.hdr-badge{
+  background:#fff; color:var(--purple);
+  border-radius:50%; width:20px; height:20px;
+  font-size:11px; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+}
+
+/* ── HERO ── */
+.hero{
+  position:relative; z-index:1; overflow:hidden;
+  background:linear-gradient(155deg,#0E0520 0%,#05040D 55%);
+  padding:30px 18px 0; min-height:230px;
+}
+.hero-ring{
+  position:absolute; top:-20px; right:-30px;
+  width:260px; height:260px;
+  border:1.5px solid rgba(165,96,255,.4);
+  border-radius:50%;
+  box-shadow:0 0 40px rgba(100,34,200,.3),inset 0 0 40px rgba(100,34,200,.1);
+  pointer-events:none;
+}
+.hero-ring2{
+  position:absolute; top:10px; right:0px;
+  width:200px; height:200px;
+  border:1px solid rgba(165,96,255,.2);
+  border-radius:50%; pointer-events:none;
+}
+.hero-eyebrow{
+  font-size:9px; font-weight:600; letter-spacing:4px;
+  text-transform:uppercase; color:var(--purple3); margin-bottom:8px;
+}
+.hero-h1{
+  font-family:'Playfair Display',serif;
+  font-size:46px; font-weight:900; line-height:.92; color:#fff;
+  margin-bottom:6px;
+  text-shadow:0 0 40px rgba(165,96,255,.35);
+}
+.hero-h1 em{ color:var(--purple3); font-style:italic; }
+.hero-sub{
+  font-family:'Cormorant Garamond',serif;
+  font-size:15px; font-style:italic; color:var(--silvd2);
+  line-height:1.55; margin-bottom:20px; max-width:210px;
+}
+.hero-cta{
+  display:inline-flex; align-items:center; gap:8px;
+  border:1.5px solid var(--purple3); border-radius:8px;
+  padding:11px 22px; font-family:'Jost',sans-serif;
+  font-size:10px; font-weight:600; letter-spacing:3px; text-transform:uppercase;
+  color:var(--purple3); background:transparent; cursor:pointer;
+  transition:background .2s;
+}
+.hero-cta:active{background:var(--pglow2)}
+.hero-bottles{
+  position:absolute; right:0; bottom:0;
+  width:180px; height:185px;
+  display:flex; align-items:flex-end; justify-content:center; gap:2px;
+}
+.bottle{font-size:56px; filter:drop-shadow(0 0 14px var(--pglow))}
+.b1{transform:translateY(14px) scale(.82)}
+.b3{transform:translateY(14px) scale(.82)}
+
+/* ── BENEFITS ── */
+.benefits{
+  position:relative; z-index:1;
+  display:flex; overflow-x:auto; scrollbar-width:none;
+  background:var(--bg2);
+  border-top:1px solid var(--border); border-bottom:1px solid var(--borderr);
+  padding:14px 16px;
+}
+.benefits::-webkit-scrollbar{display:none}
+.benefit{
+  flex-shrink:0; display:flex; flex-direction:column;
+  align-items:center; gap:5px; min-width:96px;
+  padding:0 14px; text-align:center;
+  border-right:1px solid var(--borderr);
+}
+.benefit:last-child{border:none}
+.benefit-icon{font-size:18px; margin-bottom:2px}
+.benefit-title{
+  font-family:'Jost',sans-serif;
+  font-size:8px; font-weight:700; letter-spacing:1.5px;
+  text-transform:uppercase; color:var(--silver);
+}
+.benefit-sub{font-size:7px; color:var(--silvd); line-height:1.4; margin-top:1px}
+
+/* ── SECTION ── */
+.sec{position:relative; z-index:1; padding:22px 16px 10px}
+.sec-title{
+  font-family:'Playfair Display',serif;
+  font-size:22px; font-weight:700; letter-spacing:1px; color:var(--silver);
+}
+
+/* ── CATS ── */
+.cats{
+  display:flex; gap:8px; overflow-x:auto; scrollbar-width:none;
+  padding:0 16px 14px; position:relative; z-index:1;
+}
+.cats::-webkit-scrollbar{display:none}
+.cat{
+  flex-shrink:0;
+  border:1.5px solid var(--borderr); border-radius:6px;
+  padding:7px 16px;
+  font-family:'Jost',sans-serif; font-size:11px; font-weight:600;
+  letter-spacing:1.5px; text-transform:uppercase; color:var(--silvd);
+  cursor:pointer; transition:all .2s; background:var(--card);
+}
+.cat.active{
+  background:var(--purple); border-color:var(--purple);
+  color:#fff; box-shadow:0 0 16px rgba(100,34,200,.55);
+}
+
+/* ── GRID ── */
+.grid{
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:10px; padding:0 16px; position:relative; z-index:1;
+}
+.pcard{
+  background:var(--card); border:1px solid var(--borderr);
+  border-radius:var(--r); overflow:hidden;
+  cursor:pointer; transition:border-color .2s,transform .15s;
+  display:flex; flex-direction:column;
+}
+.pcard:active{transform:scale(.97); border-color:var(--purple3)}
+.pcard-img{
+  width:100%; aspect-ratio:1;
+  background:linear-gradient(145deg,#110A28,#070617);
+  display:flex; align-items:center; justify-content:center;
+  font-size:62px; position:relative;
+}
+.pcard-img::after{
+  content:''; position:absolute; inset:0;
+  background:radial-gradient(circle at 65% 80%,rgba(100,34,200,.22) 0%,transparent 60%);
+}
+.pbadge{
+  position:absolute; top:8px; left:8px; z-index:2;
+  background:var(--purple); color:#fff;
+  font-family:'Jost',sans-serif;
+  font-size:8px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
+  padding:3px 8px; border-radius:5px;
+}
+.pbadge.sale{background:linear-gradient(135deg,#B02020,#7A0000)}
+.pcard-body{padding:10px 10px 12px; flex:1; display:flex; flex-direction:column}
+.pcard-brand{
+  font-family:'Jost',sans-serif;
+  font-size:8px; font-weight:700; letter-spacing:2.5px;
+  text-transform:uppercase; color:var(--purple3); margin-bottom:2px;
+}
+.pcard-name{
+  font-family:'Playfair Display',serif;
+  font-size:15px; font-weight:700; color:#fff; margin-bottom:1px; line-height:1.15;
+}
+.pcard-ml{font-size:9px; color:var(--silvd); margin-bottom:10px}
+.pcard-footer{display:flex; align-items:center; justify-content:space-between; margin-top:auto}
+.pcard-price{font-family:'Jost',sans-serif; font-size:15px; font-weight:700; color:#fff}
+.pcard-btn{
+  background:var(--purple); border:none; border-radius:8px;
+  padding:7px 10px; display:flex; align-items:center; gap:4px;
+  font-family:'Jost',sans-serif; font-size:9px; font-weight:700;
+  letter-spacing:1px; text-transform:uppercase; color:#fff;
+  cursor:pointer; transition:all .2s; white-space:nowrap;
+}
+.pcard-btn:active{background:var(--purple2)}
+.pcard-btn.added{background:var(--goldd); border:1px solid var(--gold); color:var(--gold)}
+
+/* ── SHOW MORE ── */
+.show-more{display:flex; justify-content:center; padding:16px; position:relative; z-index:1}
+.show-more-btn{
+  border:1.5px solid var(--borderr); border-radius:8px;
+  padding:12px 32px; background:transparent;
+  font-family:'Jost',sans-serif; font-size:11px; font-weight:600;
+  letter-spacing:2px; text-transform:uppercase; color:var(--silvd);
+  cursor:pointer; transition:all .2s;
+  display:flex; align-items:center; gap:8px;
+}
+.show-more-btn:active{border-color:var(--purple3); color:var(--purple3)}
+
+/* ── BANNERS ── */
+.banners{
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:10px; padding:0 16px; position:relative; z-index:1;
+}
+.banner{
+  border-radius:var(--r); overflow:hidden; position:relative;
+  min-height:148px; display:flex; flex-direction:column;
+  justify-content:flex-end; padding:14px; cursor:pointer;
+}
+.banner1{
+  background:linear-gradient(145deg,#190C38,#0F0718);
+  border:1px solid var(--border);
+}
+.banner2{
+  background:linear-gradient(145deg,#0D1825,#07100F);
+  border:1px solid rgba(100,34,200,.2);
+}
+.banner-emoji{position:absolute; top:10px; right:10px; font-size:38px; opacity:.65}
+.banner-tag{
+  font-family:'Jost',sans-serif;
+  font-size:8px; font-weight:700; letter-spacing:2px;
+  text-transform:uppercase; color:var(--purple3); margin-bottom:4px;
+}
+.banner-title{
+  font-family:'Playfair Display',serif;
+  font-size:16px; font-weight:700; color:#fff; line-height:1.1; margin-bottom:5px;
+}
+.banner-sub{font-size:9px; color:var(--silvd); line-height:1.4; margin-bottom:10px}
+.banner-cta{
+  border:1px solid rgba(255,255,255,.2); border-radius:6px;
+  padding:6px 12px;
+  font-family:'Jost',sans-serif; font-size:8px; font-weight:700;
+  letter-spacing:1.5px; text-transform:uppercase; color:#fff;
+  background:transparent; display:inline-block; width:fit-content; cursor:pointer;
+}
+
+/* ── STATS ── */
+.stats{
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:10px; padding:16px 16px 0; position:relative; z-index:1;
+}
+.stat{
+  background:var(--card); border:1px solid var(--borderr);
+  border-radius:var(--r); padding:14px;
+  display:flex; align-items:center; gap:10px;
+}
+.stat-icon{font-size:22px}
+.stat-num{
+  font-family:'Playfair Display',serif;
+  font-size:17px; font-weight:700; color:var(--purple3);
+}
+.stat-label{font-size:9px; color:var(--silvd); line-height:1.4; margin-top:1px}
+
+/* ── FOOTER ── */
+.footer{
+  position:relative; z-index:1;
+  background:var(--bg2); border-top:1px solid var(--borderr);
+  padding:22px 16px 32px; margin-top:20px;
+}
+.footer-logo{
+  font-family:'Playfair Display',serif;
+  font-size:19px; font-weight:900; letter-spacing:3px; color:#fff; margin-bottom:5px;
+}
+.footer-tagline{
+  font-family:'Cormorant Garamond',serif;
+  font-size:13px; font-style:italic; color:var(--silvd2); margin-bottom:16px; line-height:1.5;
+}
+.footer-contacts{display:flex; flex-direction:column; gap:6px}
+.footer-c{font-size:12px; color:var(--silvd2); display:flex; align-items:center; gap:8px}
+.footer-c span{font-size:14px}
+.footer-copy{
+  margin-top:18px; font-size:8px; letter-spacing:1.5px; text-transform:uppercase;
+  color:var(--silvd); border-top:1px solid var(--borderr); padding-top:14px;
+}
+
+/* ── OVERLAY + SHEETS ── */
+.overlay{
+  display:none; position:fixed; inset:0;
+  background:rgba(0,0,0,.82); z-index:200; backdrop-filter:blur(8px);
+}
+.overlay.open{display:block}
+
+.sheet{
+  position:fixed; bottom:0; left:0; right:0;
+  background:var(--bg2);
+  border-top:1px solid var(--border);
+  border-radius:22px 22px 0 0;
+  z-index:201; max-height:93vh; overflow-y:auto;
+  transform:translateY(100%);
+  transition:transform .32s cubic-bezier(.4,0,.2,1);
+}
+.sheet.open{transform:translateY(0)}
+.sheet-inner{padding:0 16px 38px}
+.sh-handle{
+  width:38px; height:4px; background:var(--borderr);
+  border-radius:2px; margin:14px auto 18px;
+}
+.sh-title{
+  font-family:'Playfair Display',serif;
+  font-size:24px; font-weight:700; color:#fff; margin-bottom:3px;
+}
+.sh-sub{
+  font-family:'Jost',sans-serif;
+  font-size:9px; letter-spacing:2.5px; text-transform:uppercase;
+  color:var(--silvd); margin-bottom:18px;
+}
+
+/* CART */
+.ci{
+  display:flex; align-items:center; gap:12px;
+  padding:13px 0; border-bottom:1px solid var(--borderr);
+}
+.ci-em{font-size:34px; flex-shrink:0}
+.ci-inf{flex:1}
+.ci-brand{
+  font-family:'Jost',sans-serif;
+  font-size:8px; font-weight:700; letter-spacing:2px;
+  text-transform:uppercase; color:var(--purple3);
+}
+.ci-name{
+  font-family:'Playfair Display',serif;
+  font-size:15px; font-weight:700; color:#fff;
+}
+.ci-price{font-size:11px; color:var(--silvd); margin-top:2px}
+.ci-qty{display:flex; align-items:center; gap:9px; flex-shrink:0}
+.qb{
+  width:28px; height:28px; background:var(--card);
+  border:1px solid var(--borderr); border-radius:8px;
+  color:#fff; font-size:17px;
+  display:flex; align-items:center; justify-content:center; cursor:pointer;
+}
+.qn{font-weight:700; font-size:15px; min-width:18px; text-align:center}
+.ct-row{
+  display:flex; justify-content:space-between; align-items:baseline;
+  padding:16px 0 4px; border-top:1px solid var(--borderr); margin-top:4px;
+}
+.ct-lbl{
+  font-family:'Jost',sans-serif;
+  font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--silvd);
+}
+.ct-val{
+  font-family:'Playfair Display',serif;
+  font-size:26px; font-weight:700; color:var(--purple3);
+}
+
+/* BUTTONS */
+.btn-p{
+  width:100%; border-radius:11px; padding:15px;
+  font-family:'Jost',sans-serif; font-size:11px;
+  font-weight:700; letter-spacing:3px; text-transform:uppercase;
+  cursor:pointer; border:none; color:#fff;
+  background:linear-gradient(135deg,var(--purple),#420E90);
+  box-shadow:0 4px 24px rgba(100,34,200,.5);
+  margin-top:12px; position:relative; overflow:hidden; transition:opacity .2s;
+}
+.btn-p::before{
+  content:''; position:absolute; top:0; left:-100%; width:60%; height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent);
+  animation:shim 3.5s infinite;
+}
+@keyframes shim{0%{left:-100%}100%{left:220%}}
+.btn-p:active{opacity:.82}
+.btn-back{
+  display:flex; align-items:center; gap:7px; background:none; border:none;
+  color:var(--silvd); font-family:'Jost',sans-serif;
+  font-size:11px; font-weight:500; letter-spacing:1px; cursor:pointer; padding:0 0 14px;
+}
+
+/* FORM */
+.f-sec{
+  font-family:'Jost',sans-serif;
+  font-size:9px; letter-spacing:3px; text-transform:uppercase;
+  color:var(--purple3); margin:18px 0 9px; font-weight:700;
+}
+.f-wrap{margin-bottom:10px}
+.f-lbl{
+  font-family:'Jost',sans-serif;
+  font-size:9px; letter-spacing:1.5px; text-transform:uppercase;
+  color:var(--silvd); margin-bottom:5px; display:block;
+}
+.inp{
+  width:100%; background:#07061A;
+  border:1px solid var(--borderr); border-radius:9px;
+  padding:12px 14px;
+  font-family:'Jost',sans-serif; font-size:14px; font-weight:400;
+  color:#fff; outline:none; transition:border-color .2s;
+  -webkit-appearance:none;
+}
+.inp::placeholder{color:var(--silvd); font-size:13px}
+.inp:focus{border-color:var(--purple3)}
+.inp.err{border-color:#C0392B}
+
+/* CARRIERS */
+.carrier-grid{display:grid; grid-template-columns:1fr 1fr; gap:9px; margin-bottom:4px}
+.cc{
+  background:var(--card); border:1.5px solid var(--borderr);
+  border-radius:11px; padding:13px 11px;
+  cursor:pointer; transition:all .2s; position:relative;
+}
+.cc.sel{border-color:var(--purple3); background:rgba(100,34,200,.18)}
+.cc-chk{
+  position:absolute; top:8px; right:8px;
+  width:17px; height:17px; background:var(--purple3);
+  border-radius:50%; display:none;
+  align-items:center; justify-content:center;
+  font-size:9px; color:#fff; font-weight:700;
+}
+.cc.sel .cc-chk{display:flex}
+.cc-logo{font-size:24px; margin-bottom:5px}
+.cc-name{
+  font-family:'Jost',sans-serif;
+  font-size:12px; font-weight:700; color:#fff; margin-bottom:3px;
+}
+.cc-price{
+  font-family:'Jost',sans-serif;
+  font-size:14px; font-weight:700; color:var(--purple3);
+}
+.cc-days{font-size:8px; color:var(--silvd); margin-top:3px; line-height:1.4}
+.cc-badge{
+  display:inline-block; margin-top:4px;
+  background:var(--pglow2); border:1px solid var(--border);
+  border-radius:4px; padding:2px 6px;
+  font-size:7px; font-weight:700; letter-spacing:1px;
+  text-transform:uppercase; color:var(--purple3);
+}
+
+/* LOADING DOTS */
+.ld{display:flex; gap:6px; padding:18px; justify-content:center}
+.ld span{
+  width:7px; height:7px; background:var(--purple3);
+  border-radius:50%; animation:bl 1.2s infinite;
+}
+.ld span:nth-child(2){animation-delay:.2s}
+.ld span:nth-child(3){animation-delay:.4s}
+@keyframes bl{0%,80%,100%{opacity:.2}40%{opacity:1}}
+
+/* INVOICE */
+.inv-box{
+  background:var(--card); border:1px solid var(--border);
+  border-radius:16px; padding:20px; margin-top:6px;
+  position:relative; overflow:hidden;
+}
+.inv-box::before{
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg,var(--purple),var(--purple3),var(--purple));
+}
+.inv-hdr{
+  display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px;
+}
+.inv-logo{
+  font-family:'Playfair Display',serif;
+  font-size:16px; font-weight:700; letter-spacing:2px; color:var(--purple3);
+}
+.inv-logo-sub{font-size:8px; color:var(--silvd); letter-spacing:2px; margin-top:2px}
+.inv-num{font-size:10px; color:var(--silvd); text-align:right; line-height:1.5}
+.inv-num strong{
+  font-family:'Jost',sans-serif;
+  color:#fff; font-size:13px; display:block; letter-spacing:1px;
+}
+.inv-r{
+  display:flex; justify-content:space-between; align-items:baseline;
+  padding:8px 0; border-bottom:1px solid var(--borderr); font-size:12px;
+}
+.inv-r:last-of-type{border:none}
+.inv-k{
+  font-family:'Jost',sans-serif;
+  color:var(--silvd); font-size:9px; letter-spacing:1.5px; text-transform:uppercase;
+}
+.inv-v{color:#fff; font-weight:600; text-align:right; max-width:58%; line-height:1.3}
+.inv-sec-title{
+  font-family:'Jost',sans-serif;
+  font-size:8px; letter-spacing:2.5px; text-transform:uppercase;
+  color:var(--purple3); margin:14px 0 6px; font-weight:700;
+}
+.inv-items-wrap{margin-bottom:4px}
+.inv-item{
+  display:flex; justify-content:space-between;
+  font-size:11px; padding:6px 0;
+  border-bottom:1px solid var(--borderr); color:var(--silvd);
+}
+.inv-item-n{color:var(--silver); font-weight:500}
+.inv-total{
+  display:flex; justify-content:space-between; align-items:baseline;
+  padding-top:12px; margin-top:2px;
+}
+.inv-tl{
+  font-family:'Jost',sans-serif;
+  font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--silvd);
+}
+.inv-tv{
+  font-family:'Playfair Display',serif;
+  font-size:24px; font-weight:700; color:var(--purple3);
+}
+
+/* SUCCESS */
+.succ-icon{text-align:center; font-size:58px; margin:12px 0 10px}
+.succ-title{
+  font-family:'Playfair Display',serif;
+  font-size:26px; font-weight:700; color:#fff; text-align:center; margin-bottom:5px;
+}
+.succ-sub{
+  font-family:'Cormorant Garamond',serif;
+  font-size:14px; font-style:italic; color:var(--silvd2);
+  text-align:center; margin-bottom:20px; line-height:1.6;
+}
+.tg-note{
+  background:rgba(100,34,200,.12); border:1px solid var(--border);
+  border-radius:11px; padding:14px; margin-top:14px;
+  font-size:11px; color:var(--silvd2); line-height:1.65;
+  display:flex; gap:10px; align-items:flex-start;
+}
+.tg-note-ic{font-size:22px; flex-shrink:0}
+
+/* EMPTY */
+.empty{
+  text-align:center; padding:38px 0;
+  color:var(--silvd); font-size:12px; letter-spacing:1px; line-height:1.9;
+}
+.empty .ei{font-size:52px; margin-bottom:14px}
+
+/* TOAST */
+.toast{
+  position:fixed; bottom:92px; left:50%;
+  transform:translateX(-50%) translateY(14px);
+  background:var(--card2); border:1px solid var(--border);
+  border-radius:10px; padding:10px 18px;
+  font-family:'Jost',sans-serif; font-size:12px; font-weight:500; color:#fff;
+  z-index:400; opacity:0; pointer-events:none; transition:all .3s; white-space:nowrap;
+}
+.toast.show{opacity:1; transform:translateX(-50%) translateY(0)}
+.bp{height:36px}
+</style>
+</head>
+<body>
+
+<div class="glow-top"></div>
+<div class="glow-bot"></div>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="logo-wrap">
+    <div class="logo">MIR <em>SCENTS</em></div>
+    <div class="logo-sub">Luxury Perfumery</div>
+  </div>
+  <button class="hdr-cart" onclick="openCart()">
+    🛒 КОРЗИНА
+    <span class="hdr-badge" id="cartBadge">0</span>
+  </button>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-ring"></div>
+  <div class="hero-ring2"></div>
+  <div class="hero-eyebrow">Эксклюзивная коллекция · 2024</div>
+  <div class="hero-h1"><em>Премиальные</em><br>ароматы</div>
+  <div class="hero-sub">Эксклюзивные ароматы для тех, кто выбирает лучшее</div>
+  <button class="hero-cta" onclick="scrollToCat()">Перейти в каталог →</button>
+  <div class="hero-bottles">
+    <div class="bottle b1">🖤</div>
+    <div class="bottle b2" style="font-size:64px">🌿</div>
+    <div class="bottle b3">🌑</div>
+  </div>
+</div>
+
+<!-- BENEFITS -->
+<div class="benefits">
+  <div class="benefit"><div class="benefit-icon">💎</div><div class="benefit-title">100% Гарантия</div><div class="benefit-sub">Премиальной парфюмерии</div></div>
+  <div class="benefit"><div class="benefit-icon">🚀</div><div class="benefit-title">Быстрая доставка</div><div class="benefit-sub">По всей России</div></div>
+  <div class="benefit"><div class="benefit-icon">🎁</div><div class="benefit-title">Подарок к заказу</div><div class="benefit-sub">При заказе от 5000 ₽</div></div>
+  <div class="benefit"><div class="benefit-icon">💬</div><div class="benefit-title">Консультация</div><div class="benefit-sub">Поможем с выбором</div></div>
+</div>
+
+<!-- CATALOGUE -->
+<div class="sec" id="catalogue">
+  <div class="sec-title">Каталог ароматов</div>
+</div>
+<div class="cats">
+  <div class="cat active" onclick="filterCat(this,'all')">Все</div>
+  <div class="cat" onclick="filterCat(this,'men')">Мужские</div>
+  <div class="cat" onclick="filterCat(this,'women')">Женские</div>
+  <div class="cat" onclick="filterCat(this,'unisex')">Унисекс</div>
+  <div class="cat" onclick="filterCat(this,'sale')">Акции</div>
+</div>
+<div class="grid" id="grid"></div>
+<div class="show-more"><button class="show-more-btn" onclick="showMore()">Показать ещё ∨</button></div>
+
+<!-- BANNERS -->
+<div class="banners">
+  <div class="banner banner1">
+    <div class="banner-emoji">🎁</div>
+    <div class="banner-tag">Акция</div>
+    <div class="banner-title">Подарок к каждому заказу</div>
+    <div class="banner-sub">Миниатюра аромата при заказе от 5000 ₽</div>
+    <div class="banner-cta">Подробнее</div>
+  </div>
+  <div class="banner banner2">
+    <div class="banner-emoji">💜</div>
+    <div class="banner-tag">Скидки</div>
+    <div class="banner-title">Сезонные скидки</div>
+    <div class="banner-sub">До −30% на избранные ароматы</div>
+    <div class="banner-cta">Смотреть акции</div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat"><div class="stat-icon">👥</div><div><div class="stat-num">5 000+</div><div class="stat-label">Довольных клиентов</div></div></div>
+  <div class="stat"><div class="stat-icon">⭐</div><div><div class="stat-num">4.9</div><div class="stat-label">Средняя оценка заказов</div></div></div>
+  <div class="stat"><div class="stat-icon">💬</div><div><div class="stat-num">24/7</div><div class="stat-label">Консультация по выбору</div></div></div>
+  <div class="stat"><div class="stat-icon">🏆</div><div><div class="stat-num">3 года</div><div class="stat-label">На рынке парфюмерии</div></div></div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-logo">MIR SCENTS</div>
+  <div class="footer-tagline">Премиальные ароматы для тех,<br>кто ценит качество и стиль.</div>
+  <div class="footer-contacts">
+    <div class="footer-c"><span>📞</span> 8 (800) 123-45-67</div>
+    <div class="footer-c"><span>✉️</span> info@mirscents.ru</div>
+    <div class="footer-c"><span>🕐</span> Ежедневно 10:00 – 22:00</div>
+  </div>
+  <div class="footer-copy">© MIR SCENTS, 2024. Все права защищены.</div>
+</div>
+
+<div class="bp"></div>
+
+<!-- OVERLAY -->
+<div class="overlay" id="overlay" onclick="closeAll()"></div>
+
+<!-- SHEET: CART -->
+<div class="sheet" id="sheetCart">
+  <div class="sheet-inner">
+    <div class="sh-handle"></div>
+    <div class="sh-title">Корзина</div>
+    <div class="sh-sub">MIR SCENTS · Luxury Perfumery</div>
+    <div id="cartItems"></div>
+    <div id="cartFooter"></div>
+  </div>
+</div>
+
+<!-- SHEET: DELIVERY -->
+<div class="sheet" id="sheetDel">
+  <div class="sheet-inner">
+    <div class="sh-handle"></div>
+    <button class="btn-back" onclick="backToCart()">← Вернуться в корзину</button>
+    <div class="sh-title">Оформление</div>
+    <div class="sh-sub">Шаг 1 из 2 — Данные получателя</div>
+
+    <div class="f-sec">Получатель</div>
+    <div class="f-wrap">
+      <label class="f-lbl">ФИО *</label>
+      <input class="inp" id="fFio" placeholder="Иванов Иван Иванович" autocomplete="name"/>
+    </div>
+    <div class="f-wrap">
+      <label class="f-lbl">Телефон *</label>
+      <input class="inp" id="fPhone" placeholder="+7 (___) ___-__-__" type="tel" autocomplete="tel"/>
+    </div>
+
+    <div class="f-sec">Транспортная компания</div>
+    <div id="carrierSec"><div class="ld"><span></span><span></span><span></span></div></div>
+
+    <div class="f-sec">Адрес пункта выдачи / склада ТК *</div>
+    <div class="f-wrap">
+      <input class="inp" id="fAddr" placeholder="Город, улица, дом, номер отделения"/>
+    </div>
+    <div class="f-wrap">
+      <label class="f-lbl">Пожелание к заказу</label>
+      <input class="inp" id="fNote" placeholder="Хрупкое, красивая упаковка, поздравление…"/>
+    </div>
+
+    <button class="btn-p" onclick="goInvoice()">Сформировать накладную →</button>
+    <div style="height:22px"></div>
+  </div>
+</div>
+
+<!-- SHEET: INVOICE -->
+<div class="sheet" id="sheetInv">
+  <div class="sheet-inner">
+    <div class="sh-handle"></div>
+    <button class="btn-back" onclick="backToDel()">← Изменить данные</button>
+    <div class="sh-title">Накладная</div>
+    <div class="sh-sub">Шаг 2 из 2 — Подтверждение заказа</div>
+    <div id="invContent"></div>
+    <button class="btn-p" onclick="confirmOrder()">✦ Подтвердить и отправить</button>
+    <div style="height:22px"></div>
+  </div>
+</div>
+
+<!-- SHEET: SUCCESS -->
+<div class="sheet" id="sheetOk">
+  <div class="sheet-inner">
+    <div class="sh-handle"></div>
+    <div id="okContent"></div>
+    <button class="btn-p" onclick="closeAll();resetApp()">Вернуться в магазин</button>
+    <div style="height:22px"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const tg = window.Telegram?.WebApp;
+if(tg){ tg.ready(); tg.expand(); }
+
+const PRODUCTS=[
+  {id:1, name:'Sauvage',             brand:'Dior',        price:8990,  ml:'100 мл', emoji:'🌊', badge:'ХИТ',  cat:'men',    notes:'Бергамот · Перец · Ветивер',   w:.5},
+  {id:2, name:'Ombré Leather',       brand:'Tom Ford',    price:14990, ml:'100 мл', emoji:'🖤', badge:'ХИТ',  cat:'men',    notes:'Кожа · Шафран · Пачули',       w:.5},
+  {id:3, name:'Tobacco Vanille',     brand:'Tom Ford',    price:16990, ml:'100 мл', emoji:'🌿', badge:'ХИТ',  cat:'unisex', notes:'Табак · Ваниль · Специи',       w:.5},
+  {id:4, name:'Aventus',             brand:'Creed',       price:19990, ml:'100 мл', emoji:'👑', badge:'−20%', cat:'men',    notes:'Ананас · Берёза · Мускус',      w:.5},
+  {id:5, name:'Bleu de Chanel',      brand:'Chanel',      price:9990,  ml:'100 мл', emoji:'💙', badge:'ХИТ',  cat:'men',    notes:'Цитрус · Сандал · Ветивер',    w:.5},
+  {id:6, name:'Black Orchid',        brand:'Tom Ford',    price:13990, ml:'50 мл',  emoji:'🌑', badge:null,   cat:'women',  notes:'Орхидея · Трюфель · Пачули',   w:.35},
+  {id:7, name:'Baccarat Rouge 540',  brand:'Maison MF',   price:24990, ml:'70 мл',  emoji:'🔴', badge:'−15%', cat:'unisex', notes:'Жасмин · Шафран · Амбра',       w:.4},
+  {id:8, name:'Good Girl',           brand:'Carolina H.', price:8990,  ml:'80 мл',  emoji:'👠', badge:null,   cat:'women',  notes:'Жасмин · Тонка · Мимоза',       w:.45},
+  {id:9, name:'Mon Guerlain',        brand:'Guerlain',    price:7990,  ml:'100 мл', emoji:'💜', badge:null,   cat:'women',  notes:'Лаванда · Ваниль · Сандал',    w:.5},
+  {id:10,name:'La Vie Est Belle',    brand:'Lancôme',     price:8490,  ml:'100 мл', emoji:'🌸', badge:'−10%', cat:'women',  notes:'Ирис · Пачули · Ваниль',       w:.5},
+];
+
+const CARRIERS=[
+  {id:'cdek',   logo:'📦', name:'СДЭК',          base:249, perKg:80, days:'2–5 дней',  desc:'4000+ пунктов выдачи',    badge:'Популярно'},
+  {id:'pochta', logo:'📮', name:'Почта России',   base:149, perKg:50, days:'5–14 дней', desc:'Доставка до двери / ПВЗ', badge:'Бюджетно'},
+  {id:'ozon',   logo:'🔵', name:'Ozon Логистика', base:199, perKg:65, days:'2–6 дней',  desc:'Пункты Ozon по РФ',       badge:'Быстро'},
+  {id:'yandex', logo:'🟡', name:'Яндекс Маркет',  base:229, perKg:75, days:'1–4 дня',   desc:'Постаматы и ПВЗ',         badge:'Удобно'},
+];
+
+let cart={}, form={}, carrier=null, showCount=6, currentItems=PRODUCTS;
+const fmt=n=>n.toLocaleString('ru-RU')+' ₽';
+
+/* ── GRID ── */
+function renderGrid(items){
+  document.getElementById('grid').innerHTML=items.slice(0,showCount).map(p=>`
+    <div class="pcard">
+      <div class="pcard-img">
+        ${p.emoji}
+        ${p.badge?`<div class="pbadge${p.badge.startsWith('−')||p.badge.startsWith('-')?' sale':''}">${p.badge}</div>`:''}
+      </div>
+      <div class="pcard-body">
+        <div class="pcard-brand">${p.brand}</div>
+        <div class="pcard-name">${p.name}</div>
+        <div class="pcard-ml">${p.ml}</div>
+        <div class="pcard-footer">
+          <div class="pcard-price">${fmt(p.price)}</div>
+          <button class="pcard-btn" id="addbtn-${p.id}" onclick="addToCart(${p.id})">В корзину 🛒</button>
+        </div>
+      </div>
+    </div>`).join('');
+  Object.keys(cart).forEach(id=>{
+    const b=document.getElementById('addbtn-'+id);
+    if(b){b.classList.add('added');b.textContent='В корзине ✓';}
+  });
+}
+renderGrid(PRODUCTS);
+
+function filterCat(el,cat){
+  document.querySelectorAll('.cat').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active'); showCount=6;
+  currentItems=cat==='all'?PRODUCTS:PRODUCTS.filter(p=>p.cat===cat);
+  renderGrid(currentItems);
+}
+function showMore(){ showCount+=4; renderGrid(currentItems); }
+function scrollToCat(){ document.getElementById('catalogue').scrollIntoView({behavior:'smooth'}); }
+
+/* ── CART ── */
+function addToCart(id){
+  const p=PRODUCTS.find(x=>x.id===id); if(!p)return;
+  cart[id]=(cart[id]||0)+1;
+  updateBadge();
+  const b=document.getElementById('addbtn-'+id);
+  if(b){b.classList.add('added');b.textContent='В корзине ✓';}
+  showToast(p.emoji+'  '+p.name+' — добавлен');
+  tg?.HapticFeedback?.impactOccurred('light');
+}
+function updateBadge(){
+  document.getElementById('cartBadge').textContent=Object.values(cart).reduce((a,b)=>a+b,0);
+}
+function cartTotal(){
+  return Object.keys(cart).filter(id=>cart[id]>0).reduce((s,id)=>{
+    const p=PRODUCTS.find(x=>x.id==id);return s+p.price*cart[id];
+  },0);
+}
+function cartWeight(){
+  return Object.keys(cart).filter(id=>cart[id]>0).reduce((s,id)=>{
+    const p=PRODUCTS.find(x=>x.id==id);return s+p.w*cart[id];
+  },0);
+}
+
+/* ── SHEETS ── */
+function openSheet(id){document.getElementById('overlay').classList.add('open');document.getElementById(id).classList.add('open');}
+function closeSheet(id){document.getElementById(id).classList.remove('open');}
+function closeAll(){['sheetCart','sheetDel','sheetInv','sheetOk'].forEach(closeSheet);document.getElementById('overlay').classList.remove('open');}
+function openCart(){renderCartSheet();openSheet('sheetCart');}
+function backToCart(){closeSheet('sheetDel');openSheet('sheetCart');}
+function backToDel(){closeSheet('sheetInv');openSheet('sheetDel');}
+
+function renderCartSheet(){
+  const ids=Object.keys(cart).filter(id=>cart[id]>0);
+  const iEl=document.getElementById('cartItems'), fEl=document.getElementById('cartFooter');
+  if(!ids.length){
+    iEl.innerHTML=`<div class="empty"><div class="ei">🌿</div>Корзина пуста.<br>Добавьте ароматы из каталога.</div>`;
+    fEl.innerHTML=''; return;
+  }
+  iEl.innerHTML=ids.map(id=>{
+    const p=PRODUCTS.find(x=>x.id==id);
+    return `<div class="ci">
+      <div class="ci-em">${p.emoji}</div>
+      <div class="ci-inf">
+        <div class="ci-brand">${p.brand}</div>
+        <div class="ci-name">${p.name}</div>
+        <div class="ci-price">${fmt(p.price)} · ${p.ml}</div>
+      </div>
+      <div class="ci-qty">
+        <div class="qb" onclick="chQty(${id},-1)">−</div>
+        <div class="qn">${cart[id]}</div>
+        <div class="qb" onclick="chQty(${id},1)">+</div>
+      </div>
+    </div>`;
+  }).join('');
+  fEl.innerHTML=`
+    <div class="ct-row"><div class="ct-lbl">Итого</div><div class="ct-val">${fmt(cartTotal())}</div></div>
+    <button class="btn-p" onclick="openDelivery()">Перейти к оформлению →</button>`;
+}
+
+function chQty(id,d){
+  cart[id]=(cart[id]||0)+d;
+  if(cart[id]<=0)delete cart[id];
+  updateBadge(); renderCartSheet(); renderGrid(currentItems);
+}
+
+/* ── DELIVERY ── */
+function openDelivery(){
+  closeSheet('sheetCart'); carrier=null; renderCarriers(); openSheet('sheetDel');
+}
+function calcShip(c,kg){return Math.round(c.base+c.perKg*kg);}
+
+function renderCarriers(){
+  const sec=document.getElementById('carrierSec');
+  sec.innerHTML='<div class="ld"><span></span><span></span><span></span></div>';
+  setTimeout(()=>{
+    const kg=cartWeight();
+    sec.innerHTML=`<div class="carrier-grid">${CARRIERS.map(c=>`
+      <div class="cc" id="cc-${c.id}" onclick="selCarrier('${c.id}')">
+        <div class="cc-chk">✓</div>
+        <div class="cc-logo">${c.logo}</div>
+        <div class="cc-name">${c.name}</div>
+        <div class="cc-price">${fmt(calcShip(c,kg))}</div>
+        <div class="cc-days">⏱ ${c.days}</div>
+        <div class="cc-days">${c.desc}</div>
+        <div class="cc-badge">${c.badge}</div>
+      </div>`).join('')}</div>`;
+  },1100);
+}
+
+function selCarrier(id){
+  carrier=CARRIERS.find(c=>c.id===id);
+  document.querySelectorAll('.cc').forEach(el=>el.classList.remove('sel'));
+  document.getElementById('cc-'+id).classList.add('sel');
+}
+
+/* ── INVOICE ── */
+function goInvoice(){
+  const fio=document.getElementById('fFio').value.trim();
+  const phone=document.getElementById('fPhone').value.trim();
+  const addr=document.getElementById('fAddr').value.trim();
+  let ok=true;
+  [['fFio',fio],['fPhone',phone],['fAddr',addr]].forEach(([el,v])=>{
+    const e=document.getElementById(el);
+    if(!v){e.classList.add('err');ok=false;}else e.classList.remove('err');
+  });
+  if(!carrier){showToast('⚠️ Выберите транспортную компанию');return;}
+  if(!ok){showToast('⚠️ Заполните все обязательные поля');return;}
+  form={fio,phone,addr,note:document.getElementById('fNote').value.trim(),carrier};
+  renderInvoice(); closeSheet('sheetDel'); openSheet('sheetInv');
+}
+
+function renderInvoice(){
+  const ids=Object.keys(cart).filter(id=>cart[id]>0);
+  const goods=cartTotal(), kg=cartWeight();
+  const ship=calcShip(form.carrier,kg), total=goods+ship;
+  const num='MS-'+Date.now().toString().slice(-7);
+  const date=new Date().toLocaleDateString('ru-RU');
+  form={...form,num,total,ship,date};
+
+  const itemsHtml=ids.map(id=>{
+    const p=PRODUCTS.find(x=>x.id==id);
+    return `<div class="inv-item">
+      <span class="inv-item-n">${p.emoji} ${p.name} ×${cart[id]}</span>
+      <span>${fmt(p.price*cart[id])}</span>
+    </div>`;
+  }).join('');
+
+  document.getElementById('invContent').innerHTML=`
+    <div class="inv-box">
+      <div class="inv-hdr">
+        <div><div class="inv-logo">MIR SCENTS</div><div class="inv-logo-sub">Luxury Perfumery</div></div>
+        <div class="inv-num"><strong>${num}</strong>от ${date}</div>
+      </div>
+      <div class="inv-r"><span class="inv-k">Получатель</span><span class="inv-v">${form.fio}</span></div>
+      <div class="inv-r"><span class="inv-k">Телефон</span><span class="inv-v">${form.phone}</span></div>
+      <div class="inv-r"><span class="inv-k">Адрес / ПВЗ</span><span class="inv-v">${form.addr}</span></div>
+      <div class="inv-r"><span class="inv-k">Транспортная компания</span><span class="inv-v">${form.carrier.logo} ${form.carrier.name}</span></div>
+      <div class="inv-r"><span class="inv-k">Срок доставки</span><span class="inv-v">${form.carrier.days}</span></div>
+      ${form.note?`<div class="inv-r"><span class="inv-k">Пожелание</span><span class="inv-v">${form.note}</span></div>`:''}
+      <div class="inv-sec-title">Состав заказа</div>
+      <div class="inv-items-wrap">${itemsHtml}</div>
+      <div class="inv-r"><span class="inv-k">Товары</span><span class="inv-v">${fmt(goods)}</span></div>
+      <div class="inv-r"><span class="inv-k">Доставка (${form.carrier.name})</span><span class="inv-v">${fmt(ship)}</span></div>
+      <div class="inv-total"><span class="inv-tl">К оплате</span><span class="inv-tv">${fmt(total)}</span></div>
+    </div>`;
+}
+
+/* ── CONFIRM ── */
+function confirmOrder(){
+  const ids=Object.keys(cart).filter(id=>cart[id]>0);
+  const data={
+    type:'order',
+    invoiceNum:form.num, date:form.date,
+    fio:form.fio, phone:form.phone, address:form.addr,
+    wish:form.note||'',
+    carrier:form.carrier.name,
+    carrierLogo:form.carrier.logo,
+    deliveryDays:form.carrier.days,
+    deliveryCost:form.ship,
+    items:ids.map(id=>{
+      const p=PRODUCTS.find(x=>x.id==id);
+      return{name:`${p.brand} — ${p.name}`,ml:p.ml,qty:cart[id],price:p.price,total:p.price*cart[id]};
+    }),
+    goodsTotal:cartTotal(),
+    total:form.total,
+  };
+  if(tg?.sendData) tg.sendData(JSON.stringify(data));
+  tg?.HapticFeedback?.notificationOccurred('success');
+  closeSheet('sheetInv');
+  document.getElementById('okContent').innerHTML=`
+    <div class="succ-icon">✨</div>
+    <div class="succ-title">Заказ оформлен!</div>
+    <div class="succ-sub">Накладная <strong style="color:var(--purple3)">${form.num}</strong><br>отправлена вам в Telegram</div>
+    <div class="inv-box">
+      <div class="inv-r"><span class="inv-k">Номер заказа</span><span class="inv-v" style="color:var(--purple3)">${form.num}</span></div>
+      <div class="inv-r"><span class="inv-k">ФИО</span><span class="inv-v">${form.fio}</span></div>
+      <div class="inv-r"><span class="inv-k">Транспортная компания</span><span class="inv-v">${form.carrier.logo} ${form.carrier.name}</span></div>
+      <div class="inv-r"><span class="inv-k">Срок</span><span class="inv-v">${form.carrier.days}</span></div>
+      <div class="inv-r"><span class="inv-k">Адрес</span><span class="inv-v">${form.addr}</span></div>
+      ${form.note?`<div class="inv-r"><span class="inv-k">Пожелание</span><span class="inv-v">${form.note}</span></div>`:''}
+      <div class="inv-total"><span class="inv-tl">К оплате</span><span class="inv-tv">${fmt(form.total)}</span></div>
+    </div>
+    <div class="tg-note">
+      <div class="tg-note-ic">📩</div>
+      <div>Полная накладная с составом заказа и инструкцией по отправке отправлена вам в Telegram.</div>
+    </div>`;
+  openSheet('sheetOk');
+}
+
+function resetApp(){
+  cart={}; form={}; carrier=null; showCount=6; currentItems=PRODUCTS;
+  updateBadge(); renderGrid(PRODUCTS);
+}
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2300);
+}
+</script>
+</body>
+</html>
